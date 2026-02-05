@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS competition_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE competition_db;
-
 -- Users Table
 CREATE TABLE users (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -10,7 +7,7 @@ CREATE TABLE users (
   role ENUM('admin', 'student', 'judge') DEFAULT 'student',
   avatar VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  updated_at TIMESTAMP NULL
 );
 
 -- Competitions Table
@@ -26,7 +23,7 @@ CREATE TABLE competitions (
   max_participants INT,
   created_by INT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NULL,
   FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
 );
 
@@ -38,7 +35,7 @@ CREATE TABLE participants (
   registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   status ENUM('pending', 'approved', 'rejected', 'participated') DEFAULT 'pending',
   submission_file VARCHAR(255),
-  submission_date TIMESTAMP NULL,
+  submission_date DATETIME NULL,
   notes TEXT,
   FOREIGN KEY (competition_id) REFERENCES competitions(id) ON DELETE CASCADE,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
