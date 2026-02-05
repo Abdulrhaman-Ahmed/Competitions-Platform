@@ -1,3 +1,4 @@
+// index.js
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
@@ -5,12 +6,15 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['https://competitions-platform-mncu.vercel.app'], // رابط الفرونت على Vercel
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Database connection
-require('./config/db');
+require('./config/db'); // تأكد انك عامل config/db.js متصل بالـ MySQL
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
@@ -43,8 +47,8 @@ app.use((req, res) => {
   res.status(404).json({ message: 'المسار غير موجود' });
 });
 
+// Start server
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
