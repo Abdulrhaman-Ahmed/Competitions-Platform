@@ -17,6 +17,8 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem('token'));
 
+  const API_BASE = import.meta.env.VITE_API_URL; // الرابط المباشر للباك على Render
+
   // Set axios defaults
   useEffect(() => {
     const initAuth = async () => {
@@ -34,7 +36,7 @@ export const AuthProvider = ({ children }) => {
   // Load user data
   const loadUser = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/auth/me');
+      const res = await axios.get(`${API_BASE}/auth/me`);
       setUser(res.data.user);
     } catch (error) {
       console.error('Load user error:', error);
@@ -47,7 +49,7 @@ export const AuthProvider = ({ children }) => {
   // Login
   const login = async (email, password) => {
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', {
+      const res = await axios.post(`${API_BASE}/auth/login`, {
         email,
         password
       });
@@ -72,7 +74,7 @@ export const AuthProvider = ({ children }) => {
   // Register
   const register = async (name, email, password, role = 'student') => {
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/register', {
+      const res = await axios.post(`${API_BASE}/auth/register`, {
         name,
         email,
         password,
