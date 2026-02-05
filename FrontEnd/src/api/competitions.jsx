@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+// قبل
+// const API_BASE_URL = 'http://localhost:5000/api';
+
+// بعد
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 // Get all competitions
 export const getAllCompetitions = async () => {
