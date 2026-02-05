@@ -2,6 +2,9 @@ import { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+// رابط الباك من Env (Vercel / local)
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -16,8 +19,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem('token'));
-
-  const API_BASE = import.meta.env.VITE_API_URL; // الرابط المباشر للباك على Render
 
   // Set axios defaults
   useEffect(() => {
@@ -36,7 +37,7 @@ export const AuthProvider = ({ children }) => {
   // Load user data
   const loadUser = async () => {
     try {
-      const res = await axios.get(`${API_BASE}/auth/me`);
+      const res = await axios.get(`${API_BASE_URL}/auth/me`);
       setUser(res.data.user);
     } catch (error) {
       console.error('Load user error:', error);
@@ -49,10 +50,7 @@ export const AuthProvider = ({ children }) => {
   // Login
   const login = async (email, password) => {
     try {
-      const res = await axios.post(`${API_BASE}/auth/login`, {
-        email,
-        password
-      });
+      const res = await axios.post(`${API_BASE_URL}/auth/login`, { email, password });
 
       const { token, user } = res.data;
 
@@ -74,7 +72,7 @@ export const AuthProvider = ({ children }) => {
   // Register
   const register = async (name, email, password, role = 'student') => {
     try {
-      const res = await axios.post(`${API_BASE}/auth/register`, {
+      const res = await axios.post(`${API_BASE_URL}/auth/register`, {
         name,
         email,
         password,
@@ -119,9 +117,5 @@ export const AuthProvider = ({ children }) => {
     isStudent: user?.role === 'student'
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
