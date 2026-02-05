@@ -6,9 +6,6 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-<<<<<<< HEAD
-app.use(cors({ origin: '*', credentials: true }));
-=======
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:5173',
   'http://localhost:5173',
@@ -29,7 +26,6 @@ app.use(cors({
   credentials: true
 }));
 
->>>>>>> 01ba942 (تحديث إعدادات الاتصال بين Render و Vercel)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
